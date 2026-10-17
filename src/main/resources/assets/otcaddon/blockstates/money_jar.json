@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model": "otcaddon:block/money_jar", "y": 270},
+    "facing=east": {"model": "otcaddon:block/money_jar"},
+    "facing=south": {"model": "otcaddon:block/money_jar", "y": 90},
+    "facing=west": {"model": "otcaddon:block/money_jar", "y": 180}
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.automods.otcaddon.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": ["TakeoutRewardMixin", "MachinePaymentMixin", "CustomerBonusMixin", "MaidBonusMixin"],
+  "injectors": {"defaultRequire": 1}
+}

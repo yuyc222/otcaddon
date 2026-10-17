@@ -1,0 +1,5 @@
+# Made in Blockbench 4.5.2
+newmtl m_e29aea5a-7803-47d4-99b9-4a7b3b9a7069
+# 贴图交给方块模型 JSON 的 textures 映射（#0 -> otcaddon:block/money_jar）
+map_Kd #0
+newmtl none

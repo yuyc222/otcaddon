@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [" B ", "BCB", " B "],
+  "key": {"B": {"item": "minecraft:brick"}, "C": {"item": "minecraft:chest"}},
+  "result": {"id": "otcaddon:money_jar", "count": 1}
+}

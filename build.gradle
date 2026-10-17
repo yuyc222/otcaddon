@@ -1,0 +1,44 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.143'
+}
+// 对外发布号：不带平台内部用来区分每轮构建的 -rN 后缀，见 gradle.properties 的 release_version。
+version = release_version
+group = mod_group_id
+base { archivesName = mod_id }
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+neoForge {
+    version = project.neo_version
+    runs { client { client() }; server { server(); programArgument '--nogui' } }
+    mods { "${mod_id}" { sourceSet(sourceSets.main) } }
+}
+
+repositories {
+    maven { url = 'https://maven.blamejared.com' }
+}
+
+dependencies {
+    compileOnly "mezz.jei:jei-1.21.1-neoforge-api:19.57.0.449"
+}
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+
+// src/main/java/cn/breezeth/ordertocook/api 下是 OrderToCook 兼容 API 的“编译期签名占位”：
+// 它们只负责让本附属编译通过，绝不能进 jar。否则运行时会和 OrderToCook 本体里的同名类冲突，
+// 注册会写进影子副本，附属就“注册成功但游戏里没反应”。运行期一律由 OrderToCook 本体提供真实实现。
+tasks.named('jar', Jar) {
+    // 把 MIT 协议一起打进 jar，装进游戏后也能在 META-INF/LICENSE 里看到。
+    from('LICENSE') { into 'META-INF' }
+    exclude 'cn/breezeth/ordertocook/**'
+    // 上面的排除只挡住 class 文件，Gradle 仍会留下 cn/、cn/breezeth/ 两个空目录项，这里一并去掉。
+    exclude 'cn/**'
+}
+
+processResources {
+    def props = [minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+                 neo_version: neo_version, loader_version_range: loader_version_range,
+                 mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: release_version,
+                 mod_authors: mod_authors, mod_credits: mod_credits]
+    inputs.properties props
+    filteringCharset = 'UTF-8'
+    filesMatching('META-INF/neoforge.mods.toml') { expand props }
+}
